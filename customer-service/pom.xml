@@ -16,6 +16,7 @@
 
 	<properties>
 		<java.version>13</java.version>
+		<pact-jvm-provider-junit5.version>4.0.6</pact-jvm-provider-junit5.version>
 	</properties>
 
 	<dependencies>
@@ -70,6 +71,10 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>au.com.dius</groupId>
+			<artifactId>pact-jvm-provider-junit5</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot.experimental</groupId>
 			<artifactId>spring-boot-test-autoconfigure-r2dbc</artifactId>
 			<scope>test</scope>
@@ -89,6 +94,11 @@
 				<version>0.1.0.M3</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>au.com.dius</groupId>
+				<artifactId>pact-jvm-provider-junit5</artifactId>
+				<version>${pact-jvm-provider-junit5.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
