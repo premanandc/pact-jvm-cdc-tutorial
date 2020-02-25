@@ -112,6 +112,27 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>publish-pacts</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<systemPropertyVariables>
+								<pact.provider.version>${project.version}</pact.provider.version>
+								<pact.verifier.publishResults>true</pact.verifier.publishResults>
+							</systemPropertyVariables>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 	<repositories>
 		<repository>
 			<id>spring-milestones</id>
