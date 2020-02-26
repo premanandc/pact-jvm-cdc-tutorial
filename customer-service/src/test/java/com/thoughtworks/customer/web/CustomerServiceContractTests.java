@@ -31,12 +31,17 @@ public class CustomerServiceContractTests {
         context.verifyInteraction();
     }
 
-    @State("A customer with an existing ID")
+    @State("an existing customer with a valid id")
     void pactWithAnExistingCustomer() {
         Flux.just(1234L)
                 .map(id -> new Customer(id, "Test", "First"))
                 .flatMap(repository::save)
                 .blockLast();
+    }
+
+    @State("a non-existent customer with an invalid id")
+    void pactWithANonExistentCustomer() {
+
     }
 }
 

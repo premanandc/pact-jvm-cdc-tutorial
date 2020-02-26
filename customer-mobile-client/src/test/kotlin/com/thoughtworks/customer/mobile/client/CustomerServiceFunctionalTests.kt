@@ -1,6 +1,7 @@
 package com.thoughtworks.customer.mobile.client
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.GenericContainer
@@ -18,7 +19,8 @@ class CustomerServiceFunctionalTests {
             .apply {
                 withExposedPorts(8080)
                 withCommand("-u", "http://${pactBrokerAddress}/pacts/provider/CustomerService/consumer/AndroidClient/latest",
-                        "-p", "8080")
+                        "-p", "8080",
+                        "-s", "an existing customer with a valid id")
                 withLogConsumer(Slf4jLogConsumer(logger))
             }
 
