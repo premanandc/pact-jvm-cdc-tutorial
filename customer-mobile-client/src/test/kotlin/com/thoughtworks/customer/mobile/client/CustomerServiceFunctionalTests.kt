@@ -1,17 +1,16 @@
 package com.thoughtworks.customer.mobile.client
 
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.slf4j.LoggerFactory
 import org.testcontainers.containers.GenericContainer
+import org.testcontainers.containers.output.Slf4jLogConsumer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
-import java.net.URI
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse.BodyHandlers
 
 @Testcontainers
 class CustomerServiceFunctionalTests {
+    private val logger = LoggerFactory.getLogger(CustomerServiceFunctionalTests::class.java)
     private val pactBrokerAddress = "172.17.0.1"
 
     @Container
@@ -20,19 +19,18 @@ class CustomerServiceFunctionalTests {
                 withExposedPorts(8080)
                 withCommand("-u", "http://${pactBrokerAddress}/pacts/provider/CustomerService/consumer/AndroidClient/latest",
                         "-p", "8080")
+                withLogConsumer(Slf4jLogConsumer(logger))
             }
 
     @Test
     fun shouldRunFunctionalTest() {
-        val serverAddress = "http://${stubServer.containerIpAddress}:${stubServer.getMappedPort(8080)}"
-        val client = HttpClient.newBuilder().build()
-        val request = HttpRequest.newBuilder()
-                .uri(URI.create("$serverAddress/customers/1234"))
-                .header("Accept", "application/json")
-                .build()
-        val response = client.send(request, BodyHandlers.ofString())
+        val serverAddress = stubServer.containerIpAddress
+        val port = stubServer.getMappedPort(8080)
+        val browser: CustomerBrowser = DefaultCustomerBrowser(serverAddress, port)
 
-        assertEquals(200, response.statusCode())
-
+        val customer = browser.findById(1234L).get()
+        assertNotNull(customer!!)
+        assertEquals("Test", customer.firstName)
+        assertEquals("First", customer.lastName)
     }
 }
