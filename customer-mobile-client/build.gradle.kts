@@ -14,6 +14,8 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")
     testImplementation("au.com.dius:pact-jvm-consumer-junit5:4.0.6")
+    implementation(platform("org.testcontainers:testcontainers-bom:1.12.5"))
+    testImplementation("org.testcontainers:junit-jupiter")
 }
 
 tasks.withType<Test> {
